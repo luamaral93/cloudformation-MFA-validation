@@ -1,0 +1,14 @@
+Resources:
+  MySNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        Endpoint: infraestrutura.cloud@compasso.com.br
+        Protocol: email
+      TopicName: "Lista-Emails-MFA-v1"
+
+Outputs:
+  Topic:
+    Description: TopicName
+    Value: 
+      Fn::GetAtt: MySNSTopic.TopicName

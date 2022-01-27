@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  NestedStackA:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties :
+      TemplateURL: http://s3.amazonaws.com/aws-configservice-us-east-1/cloudformation-templates-for-managed-rules/IAM_USER_MFA_ENABLED.template
+      TimeoutInMinutes: '60'
+  NestedStackB: 
+    Type: 'AWS::CloudFormation::Stack'
+    Properties :
+      TemplateURL: s3://resourcebucketgovops/cloudformation/sns/sns.yml
+      TimeoutInMinutes: '60'
+  NestedStackC:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties :
+      TemplateURL: s3://resourcebucketgovops/cloudformation/eventbridge/eventbridge.yml
+      TimeoutInMinutes: '60'
+      Parameters:
+        SnsName: 
+        - Fn::GetAtt NestedStackB.Outputs.Topic
+
+
+
+#  NestedStackExample:
+#    Type: 'AWS::CloudFormation::Stack'
+#    Properties :
+#      TemplateURL: https://myteste-s3bucket-1ewfkxr7num75.s3.amazonaws.com/vpc-stack.yml
+#      TimeoutInMinutes: '60'
+
+#      Parameters:
+#         VPCCIDR: 10.100.0.0/16
+#         PublicSubnet1: 10.100.5.0/24
+#         PrivateSubnet1RDGW: 10.100.4.0/24
+#         PrivateSubnet2RDGW: 10.100.3.0/24
+#         PrivateSubnet1AD: 10.100.2.0/24
+#         PrivateSubnet2AD: 10.100.1.0/24
+#         UATApprovalEmail: ragoliveira@uolinc.com
+#         ProdApprovalEmail: example@example.com
+#         TagPrefix : SeniorNested

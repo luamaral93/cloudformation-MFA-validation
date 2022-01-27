@@ -1,0 +1,45 @@
+Resources:
+  AWSConfigRule:
+    Type: 'AWS::Config::ConfigRule'
+    Properties:
+      ConfigRuleName: 
+       - Fn::GetAtt ConfigRuleName
+      Description: >-
+        Checks whether the AWS Identity and Access Management users have
+        multi-factor authentication (MFA) enabled.
+      InputParameters: {}
+      Scope: {}
+      Source:
+        Owner: AWS
+        SourceIdentifier: IAM_USER_MFA_ENABLED
+      MaximumExecutionFrequency: 
+       - Fn::GetAtt MaximumExecutionFrequency
+Parameters:
+  ConfigRuleName:
+    Type: String
+    Default: iam-user-mfa-enabled
+    Description: The name that you assign to the AWS Config rule.
+    MinLength: '1'
+    ConstraintDescription: This parameter is required.
+  MaximumExecutionFrequency:
+    Type: String
+    Default: TwentyFour_Hours
+    Description: The frequency that you want AWS Config to run evaluations for the rule.
+    MinLength: '1'
+    ConstraintDescription: This parameter is required.
+    AllowedValues:
+      - One_Hour
+      - Three_Hours
+      - Six_Hours
+      - Twelve_Hours
+      - TwentyFour_Hours
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: Required
+        Parameters: []
+      - Label:
+          default: Optional
+        Parameters: []
+Conditions: {}
